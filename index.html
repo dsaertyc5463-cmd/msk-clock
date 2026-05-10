@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Московское время MSK</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0f2a 0%, #0a1a3a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Roboto', monospace;
+            padding: 20px;
+        }
+
+        .time-window {
+            background: rgba(15, 25, 55, 0.65);
+            backdrop-filter: blur(12px);
+            border-radius: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        .city {
+            font-size: 1.8rem;
+            font-weight: 500;
+            background: linear-gradient(120deg, #fff, #7f9fff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .clock {
+            font-family: 'Courier New', monospace;
+            font-size: 5rem;
+            font-weight: bold;
+            color: #f0f9ff;
+            text-shadow: 0 0 12px rgba(0, 200, 255, 0.6);
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            border-radius: 50px;
+            margin-bottom: 20px;
+        }
+
+        .seconds {
+            background: #1e2a5e;
+            padding: 5px 15px;
+            border-radius: 40px;
+            display: inline-block;
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .date-info {
+            font-size: 1.3rem;
+            color: #ccdeff;
+            background: rgba(0,0,0,0.3);
+            padding: 12px 20px;
+            border-radius: 60px;
+            display: inline-block;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 0.8rem;
+            color: #8a9bd5;
+        }
+    </style>
+</head>
+<body>
+    <div class="time-window">
+        <div class="city">🕰️ МОСКВА • MSK</div>
+        <div class="clock" id="clock">00:00:00</div>
+        <div class="date-info" id="date"></div>
+        <div class="footer">Точное московское время | обновление каждую секунду</div>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+            const msk = new Date(utc + (3 * 3600000));
+            
+            const hours = String(msk.getHours()).padStart(2, '0');
+            const minutes = String(msk.getMinutes()).padStart(2, '0');
+            const seconds = String(msk.getSeconds()).padStart(2, '0');
+            
+            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+            
+            const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+            document.getElementById('date').textContent = msk.toLocaleDateString('ru-RU', options);
+        }
+        
+        updateTime();
+        setInterval(updateTime, 1000);
+    </script>
+</body>
+</html>
